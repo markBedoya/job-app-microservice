@@ -1,0 +1,34 @@
+###
+//getAllCompanies
+GET localhost:8080/companies
+
+###
+//GetCompanyById
+GET localhost:8080/companies/1
+
+###
+//CreateCompany
+POST http://localhost:8080/companies
+Content-Type: application/json
+
+{
+  "name": "CompanyName",
+  "description": "CompanyDescription",
+  "jobs": [],
+  "reviews": []
+}
+
+###
+//UpdateCompanyById
+PUT http://localhost:8080/companies/1
+Content-Type: application/json
+
+{
+  "name": "CompanyNameUpdated"
+}
+
+###
+//DeleteCompanyById
+DELETE http://localhost:8080/companies/1
+
+###

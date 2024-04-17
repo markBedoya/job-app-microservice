@@ -1,0 +1,43 @@
+###
+//getAllJobs
+GET localhost:8080/jobs
+
+###
+//GetJobById
+GET localhost:8080/jobs/1
+
+###
+//CreateJob
+POST localhost:8080/jobs
+Content-Type: application/json
+
+{
+  "title": "Title",
+  "description": "Description",
+  "minSalary": "30000",
+  "maxSalary": "40000",
+  "location": "Location",
+  "test" : "test",
+  "company": {
+    "id": 1
+  }
+}
+
+###
+//UpdateJobById
+PUT http://localhost:8080/jobs/1
+Content-Type: application/json
+
+{
+  "title": "Title-Updated",
+  "description": "Description-Updated",
+  "minSalary": "50000",
+  "maxSalary": "60000",
+  "location": "Location-Updated"
+}
+
+###
+//DeleteJobById
+DELETE http://localhost:8080/jobs/1
+
+###

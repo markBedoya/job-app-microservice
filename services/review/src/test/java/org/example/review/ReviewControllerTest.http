@@ -1,0 +1,35 @@
+###
+//getAllReviewsByCompanyId
+GET localhost:8080/companies/1/reviews
+
+###
+//GetReviewByCompanyIdReviewId
+GET localhost:8080/companies/1/reviews/1
+
+###
+//CreateCompanyReview
+POST localhost:8080/companies/1/reviews
+Content-Type: application/json
+
+{
+  "title": "Review Title",
+  "message": "Review Message",
+  "rating": 5.00
+}
+
+###
+//UpdateReviewByCompanyIdReviewId
+PUT http://localhost:8080/companies/1/reviews/1
+Content-Type: application/json
+
+{
+  "title": "Updated Review Title",
+  "message": "Updated Review Message",
+  "rating": 7.00
+}
+
+###
+//DeleteReviewByCompanyIdReviewId
+DELETE http://localhost:8080/companies/1/reviews/1
+
+###
