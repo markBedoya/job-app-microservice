@@ -31,7 +31,8 @@ Content-Type: application/json
   "description": "Description-Updated",
   "minSalary": "50000",
   "maxSalary": "60000",
-  "location": "Location-Updated"
+  "location": "Location-Updated",
+  "companyId": 1
 }
 
 ###
