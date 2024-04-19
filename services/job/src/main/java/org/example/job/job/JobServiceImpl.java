@@ -3,7 +3,10 @@ package org.example.job.job;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.example.job.external.Company;
+import org.example.job.job.dto.JobWithCompanyDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @AllArgsConstructor
@@ -12,8 +15,21 @@ public class JobServiceImpl implements JobService {
   private JobDao jobDao;
 
   @Override
-  public List<Job> getAllJobs() {
-    return jobDao.findAll();
+  public List<JobWithCompanyDTO> getAllJobs() {
+    List<Job> jobs = jobDao.findAll();
+    return jobs.stream().map(this::convertToDTO).toList();
+  }
+
+  private JobWithCompanyDTO convertToDTO (Job job) {
+    JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
+
+    RestTemplate restTemplate = new RestTemplate();
+    Company company = restTemplate.getForObject(
+        "http://localhost:8081/companies/" + job.getCompanyId(), Company.class);
+
+    jobWithCompanyDTO.setJob(job);
+    jobWithCompanyDTO.setCompany(company);
+    return jobWithCompanyDTO;
   }
 
   @Override

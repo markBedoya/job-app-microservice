@@ -1,0 +1,40 @@
+#To start all containers on local, run cmd [docker compose up -d]
+#To check pgAdmin connection with postgresSQL, run cmd [docker exec -ti pgadmin_container ping postgres_container]
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: sa
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-sa}
+      #pgadmin master password is "sa" too.
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

@@ -3,6 +3,7 @@ package org.example.job.job;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.example.job.job.dto.JobWithCompanyDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,7 @@ public class JobController {
   private JobService jobService;
 
   @GetMapping
-  public ResponseEntity<List<Job>> getAllJobs() {
+  public ResponseEntity<List<JobWithCompanyDTO>> getAllJobs() {
     return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
   }
 
@@ -41,7 +42,8 @@ public class JobController {
   }
 
   @PutMapping("/{jobId}")
-  public ResponseEntity<String> updateJobById(@PathVariable Long jobId, @RequestBody Job updatedJob) {
+  public ResponseEntity<String> updateJobById(@PathVariable Long jobId,
+      @RequestBody Job updatedJob) {
     return jobService.updateJobById(jobId, updatedJob) ?
         new ResponseEntity<>("Job updated successfully.", HttpStatus.OK) :
         new ResponseEntity<>("Job not found.", HttpStatus.NOT_FOUND);
@@ -51,7 +53,7 @@ public class JobController {
   public ResponseEntity<String> deleteJobById(@PathVariable Long jobId) {
     return jobService.deleteJobById(jobId) ?
         new ResponseEntity<>("Job deleted successfully.", HttpStatus.OK) :
-        new ResponseEntity<>("Job not found.",HttpStatus.NOT_FOUND);
+        new ResponseEntity<>("Job not found.", HttpStatus.NOT_FOUND);
   }
 
 }
