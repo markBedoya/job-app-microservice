@@ -1,6 +1,6 @@
 ###
 //getAllReviews
-GET localhost:8083/reviews
+GET localhost:8083/reviews?companyId=1
 
 ###
 //GetReviewById
@@ -8,14 +8,13 @@ GET localhost:8083/reviews/1
 
 ###
 //CreateReview
-POST localhost:8083/reviews
+POST localhost:8083/reviews?companyId=1
 Content-Type: application/json
 
 {
   "title": "Review Title",
   "message": "Review Message",
-  "rating": 5.00,
-  "companyId": 1
+  "rating": 5.00
 }
 
 ###
@@ -26,8 +25,7 @@ Content-Type: application/json
 {
   "title": "Updated Review Title",
   "message": "Updated Review Message",
-  "rating": 7.00,
-  "companyId": 1
+  "rating": 7.00
 }
 
 ###

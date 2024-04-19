@@ -12,8 +12,9 @@ public class ReviewServiceImpl implements ReviewService {
   private ReviewDao reviewRepository;
 
   @Override
-  public List<Review> getAllReviews() {
-    return reviewRepository.findAll();
+  public List<Review> getAllReviews(Long companyId) {
+    //use companyId
+    return reviewRepository.findByCompanyId(companyId);
   }
 
   @Override
@@ -22,12 +23,17 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   @Override
-  public void createReview(Review review) {
+  public boolean createReview(Long companyId, Review review) {
+    if (companyId == null) {
+      return false;
+    }
+    review.setCompanyId(companyId);
     reviewRepository.save(review);
+    return true;
   }
 
   @Override
-  public boolean updateReviewById(Long reviewId, Review updatedReview) {
+  public boolean updateReview(Long reviewId, Review updatedReview) {
     Optional<Review> reviewOptional= reviewRepository.findById(reviewId);
     if (reviewOptional.isEmpty()) {
       return false;
@@ -36,7 +42,6 @@ public class ReviewServiceImpl implements ReviewService {
     reviewToUpdate.setTitle(updatedReview.getTitle());
     reviewToUpdate.setMessage(updatedReview.getMessage());
     reviewToUpdate.setRating(updatedReview.getRating());
-    reviewToUpdate.setCompanyId(updatedReview.getCompanyId());
     reviewRepository.save(reviewToUpdate);
     return true;
   }

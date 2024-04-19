@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,8 +23,8 @@ public class ReviewController {
   private ReviewService reviewService;
 
   @GetMapping
-  public ResponseEntity<List<Review>> getAllReviews() {
-    return new ResponseEntity<>(reviewService.getAllReviews(), HttpStatus.OK);
+  public ResponseEntity<List<Review>> getAllReviews(@RequestParam Long companyId) {
+    return new ResponseEntity<>(reviewService.getAllReviews(companyId), HttpStatus.OK);
   }
 
   @GetMapping("/{reviewId}")
@@ -34,15 +35,17 @@ public class ReviewController {
   }
 
   @PostMapping
-  public ResponseEntity<String> createReview(@RequestBody Review review) {
-    reviewService.createReview(review);
-    return  new ResponseEntity<>("Review created successfully.", HttpStatus.CREATED);
+  public ResponseEntity<String> createReview(@RequestParam Long companyId,
+      @RequestBody Review review) {
+    return reviewService.createReview(companyId, review) ?
+        new ResponseEntity<>("Review created successfully.", HttpStatus.CREATED) :
+        new ResponseEntity<>("Review not created.", HttpStatus.NOT_FOUND);
   }
 
   @PutMapping("/{reviewId}")
   public ResponseEntity<String> updateReview(@PathVariable Long reviewId,
       @RequestBody Review updatedReview) {
-    return reviewService.updateReviewById(reviewId, updatedReview) ?
+    return reviewService.updateReview(reviewId, updatedReview) ?
         new ResponseEntity<>("Review updated successfully", HttpStatus.OK) :
         new ResponseEntity<>("Review not updated.", HttpStatus.NOT_FOUND);
   }

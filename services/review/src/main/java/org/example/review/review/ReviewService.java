@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewService {
-  List<Review> getAllReviews();
+  List<Review> getAllReviews(Long companyId);
   Optional<Review> getReviewById(Long reviewId);
-  void createReview(Review review);
-  boolean updateReviewById(Long reviewId, Review updatedReview);
+  boolean createReview(Long companyId, Review review);
+  boolean updateReview(Long reviewId, Review updatedReview);
   boolean deleteReviewById(Long reviewId);
 
 }
