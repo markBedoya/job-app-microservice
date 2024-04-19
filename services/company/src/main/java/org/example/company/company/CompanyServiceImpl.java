@@ -29,14 +29,14 @@ public class CompanyServiceImpl implements CompanyService {
   @Override
   public boolean updateCompanyById(Long companyId, Company updatedCompany) {
     Optional<Company> companyOptional = companyDao.findById(companyId);
-    if (companyOptional.isPresent()) {
-      Company companyToUpdate = companyOptional.get();
-      companyToUpdate.setName(updatedCompany.getName());
-      companyToUpdate.setDescription(updatedCompany.getDescription());
-      companyDao.save(companyToUpdate);
-      return true;
+    if (companyOptional.isEmpty()) {
+      return false;
     }
-    return false;
+    Company companyToUpdate = companyOptional.get();
+    companyToUpdate.setName(updatedCompany.getName());
+    companyToUpdate.setDescription(updatedCompany.getDescription());
+    companyDao.save(companyToUpdate);
+    return true;
   }
 
   @Override

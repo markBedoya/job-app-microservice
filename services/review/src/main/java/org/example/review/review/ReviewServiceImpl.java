@@ -33,7 +33,10 @@ public class ReviewServiceImpl implements ReviewService {
       return false;
     }
     Review reviewToUpdate = reviewOptional.get();
-    reviewToUpdate = updatedReview;
+    reviewToUpdate.setTitle(updatedReview.getTitle());
+    reviewToUpdate.setMessage(updatedReview.getMessage());
+    reviewToUpdate.setRating(updatedReview.getRating());
+    reviewToUpdate.setCompanyId(updatedReview.getCompanyId());
     reviewRepository.save(reviewToUpdate);
     return true;
   }

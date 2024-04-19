@@ -29,17 +29,18 @@ public class JobServiceImpl implements JobService {
   @Override
   public boolean updateJobById(Long jobId, Job updatedJob) {
     Optional<Job> jobOptional = jobDao.findById(jobId);
-    if (jobOptional.isPresent()) {
-      Job jobToUpdate = jobOptional.get();
-      jobToUpdate.setTitle(updatedJob.getTitle());
-      jobToUpdate.setDescription(updatedJob.getDescription());
-      jobToUpdate.setMinSalary(updatedJob.getMinSalary());
-      jobToUpdate.setMaxSalary(updatedJob.getMaxSalary());
-      jobToUpdate.setLocation(updatedJob.getLocation());
-      jobDao.save(jobToUpdate);
-      return true;
+    if (jobOptional.isEmpty()) {
+      return false;
     }
-    return false;
+    Job jobToUpdate = jobOptional.get();
+    jobToUpdate.setTitle(updatedJob.getTitle());
+    jobToUpdate.setDescription(updatedJob.getDescription());
+    jobToUpdate.setMinSalary(updatedJob.getMinSalary());
+    jobToUpdate.setMaxSalary(updatedJob.getMaxSalary());
+    jobToUpdate.setLocation(updatedJob.getLocation());
+    jobToUpdate.setCompanyId(updatedJob.getCompanyId());
+    jobDao.save(jobToUpdate);
+    return true;
   }
 
   @Override
