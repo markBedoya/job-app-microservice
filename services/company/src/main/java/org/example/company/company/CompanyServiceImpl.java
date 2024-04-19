@@ -33,8 +33,6 @@ public class CompanyServiceImpl implements CompanyService {
       Company companyToUpdate = companyOptional.get();
       companyToUpdate.setName(updatedCompany.getName());
       companyToUpdate.setDescription(updatedCompany.getDescription());
-      companyToUpdate.setJobs(updatedCompany.getJobs());
-      companyToUpdate.setReviews(updatedCompany.getReviews());
       companyDao.save(companyToUpdate);
       return true;
     }

@@ -1,34 +1,33 @@
 ###
 //getAllCompanies
-GET localhost:8080/companies
+GET localhost:8081/companies
 
 ###
 //GetCompanyById
-GET localhost:8080/companies/1
+GET localhost:8081/companies/1
 
 ###
 //CreateCompany
-POST http://localhost:8080/companies
+POST http://localhost:8081/companies
 Content-Type: application/json
 
 {
   "name": "CompanyName",
-  "description": "CompanyDescription",
-  "jobs": [],
-  "reviews": []
+  "description": "CompanyDescription"
 }
 
 ###
 //UpdateCompanyById
-PUT http://localhost:8080/companies/1
+PUT http://localhost:8081/companies/1
 Content-Type: application/json
 
 {
-  "name": "CompanyNameUpdated"
+  "name": "CompanyName Updated",
+  "description": "CompanyDescription Updated"
 }
 
 ###
 //DeleteCompanyById
-DELETE http://localhost:8080/companies/1
+DELETE http://localhost:8081/companies/1
 
 ###

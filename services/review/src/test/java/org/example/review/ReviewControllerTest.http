@@ -1,14 +1,14 @@
 ###
 //getAllReviewsByCompanyId
-GET localhost:8080/companies/1/reviews
+GET localhost:8083/companies/1/reviews
 
 ###
 //GetReviewByCompanyIdReviewId
-GET localhost:8080/companies/1/reviews/1
+GET localhost:8083/companies/1/reviews/1
 
 ###
 //CreateCompanyReview
-POST localhost:8080/companies/1/reviews
+POST localhost:8083/companies/1/reviews
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 //UpdateReviewByCompanyIdReviewId
-PUT http://localhost:8080/companies/1/reviews/1
+PUT http://localhost:8083/companies/1/reviews/1
 Content-Type: application/json
 
 {
@@ -30,6 +30,6 @@ Content-Type: application/json
 
 ###
 //DeleteReviewByCompanyIdReviewId
-DELETE http://localhost:8080/companies/1/reviews/1
+DELETE http://localhost:8083/companies/1/reviews/1
 
 ###

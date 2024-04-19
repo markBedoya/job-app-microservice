@@ -1,14 +1,14 @@
 ###
 //getAllJobs
-GET localhost:8080/jobs
+GET localhost:8082/jobs
 
 ###
 //GetJobById
-GET localhost:8080/jobs/1
+GET localhost:8082/jobs/1
 
 ###
 //CreateJob
-POST localhost:8080/jobs
+POST localhost:8082/jobs
 Content-Type: application/json
 
 {
@@ -18,14 +18,12 @@ Content-Type: application/json
   "maxSalary": "40000",
   "location": "Location",
   "test" : "test",
-  "company": {
-    "id": 1
-  }
+  "companyId" : 1
 }
 
 ###
 //UpdateJobById
-PUT http://localhost:8080/jobs/1
+PUT http://localhost:8082/jobs/1
 Content-Type: application/json
 
 {
@@ -38,6 +36,6 @@ Content-Type: application/json
 
 ###
 //DeleteJobById
-DELETE http://localhost:8080/jobs/1
+DELETE http://localhost:8082/jobs/1
 
 ###
