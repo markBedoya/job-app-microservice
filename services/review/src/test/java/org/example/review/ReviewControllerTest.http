@@ -14,7 +14,8 @@ Content-Type: application/json
 {
   "title": "Review Title",
   "message": "Review Message",
-  "rating": 5.00
+  "rating": 5.00,
+  "companyId": 1
 }
 
 ###
@@ -25,7 +26,8 @@ Content-Type: application/json
 {
   "title": "Updated Review Title",
   "message": "Updated Review Message",
-  "rating": 7.00
+  "rating": 7.00,
+  "companyId": 1
 }
 
 ###
