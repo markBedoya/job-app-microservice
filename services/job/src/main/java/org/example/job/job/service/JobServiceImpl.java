@@ -3,6 +3,8 @@ package org.example.job.job.service;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.example.job.job.clients.CompanyClient;
+import org.example.job.job.clients.ReviewClient;
 import org.example.job.job.dao.JobDao;
 import org.example.job.job.externalpojo.Company;
 import org.example.job.job.dto.JobDTO;
@@ -20,7 +22,9 @@ import org.springframework.web.client.RestTemplate;
 public class JobServiceImpl implements JobService {
 
   private JobDao jobDao;
-  private RestTemplate restTemplate;
+  //private RestTemplate restTemplate;
+  private CompanyClient companyClient;
+  private ReviewClient reviewClient;
 
   @Override
   public List<JobDTO> getAllJobs() {
@@ -29,16 +33,18 @@ public class JobServiceImpl implements JobService {
   }
 
   private JobDTO convertToDTO (Job job) {
-    Company company = restTemplate.getForObject(
-        "http://company:8081/companies/" + job.getCompanyId(), Company.class);
+    //Company company = restTemplate.getForObject(
+    //    "http://company:8081/companies/" + job.getCompanyId(), Company.class);
+    Company company = companyClient.getCompany(job.getCompanyId());
 
-    ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
-        "http://review:8083/reviews?companyId=" + job.getCompanyId(),
-        HttpMethod.GET,
-        null,
-        new ParameterizedTypeReference<List<Review>>() {});
+    //ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
+    //    "http://review:8083/reviews?companyId=" + job.getCompanyId(),
+    //    HttpMethod.GET,
+    //    null,
+    //    new ParameterizedTypeReference<List<Review>>() {});
+    List<Review> reviewList = reviewClient.getReviews(job.getCompanyId());
 
-    return JobMapper.mapToJobDto(job, company, reviewResponse.getBody());
+    return JobMapper.mapToJobDto(job, company, reviewList);
   }
 
   @Override

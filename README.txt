@@ -8,6 +8,7 @@ Summary:
 Technologies:
   Service Registry  - Spring cloud netflix eureka for service registry
   Spring Cloud      - Required for service registry and built-in load balancing for Rest Template
+  OpenFeign         - Spring Cloud library to reduce code writing Rest requests within our service internal communications
   Java              - Primary language
   Spring Boot       - Web Framework
   PostgreSQL DB     - Primary relational DB
