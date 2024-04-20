@@ -24,7 +24,6 @@ public class JobServiceImpl implements JobService {
   private JobWithCompanyDTO convertToDTO (Job job) {
     JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
 
-    //RestTemplate restTemplate = new RestTemplate();
     Company company = restTemplate.getForObject(
         "http://company:8081/companies/" + job.getCompanyId(), Company.class);
 
