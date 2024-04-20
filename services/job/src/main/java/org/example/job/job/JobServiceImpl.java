@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class JobServiceImpl implements JobService {
 
   private JobDao jobDao;
+  private RestTemplate restTemplate;
 
   @Override
   public List<JobWithCompanyDTO> getAllJobs() {
@@ -23,9 +24,9 @@ public class JobServiceImpl implements JobService {
   private JobWithCompanyDTO convertToDTO (Job job) {
     JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
 
-    RestTemplate restTemplate = new RestTemplate();
+    //RestTemplate restTemplate = new RestTemplate();
     Company company = restTemplate.getForObject(
-        "http://localhost:8081/companies/" + job.getCompanyId(), Company.class);
+        "http://company:8081/companies/" + job.getCompanyId(), Company.class);
 
     jobWithCompanyDTO.setJob(job);
     jobWithCompanyDTO.setCompany(company);
