@@ -1,10 +1,17 @@
-package org.example.job.job;
+package org.example.job.job.service;
 
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.example.job.external.Company;
-import org.example.job.job.dto.JobWithCompanyDTO;
+import org.example.job.job.dao.JobDao;
+import org.example.job.job.externalpojo.Company;
+import org.example.job.job.dto.JobDTO;
+import org.example.job.job.externalpojo.Review;
+import org.example.job.job.mapper.JobMapper;
+import org.example.job.job.pojo.Job;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,25 +23,27 @@ public class JobServiceImpl implements JobService {
   private RestTemplate restTemplate;
 
   @Override
-  public List<JobWithCompanyDTO> getAllJobs() {
+  public List<JobDTO> getAllJobs() {
     List<Job> jobs = jobDao.findAll();
     return jobs.stream().map(this::convertToDTO).toList();
   }
 
-  private JobWithCompanyDTO convertToDTO (Job job) {
-    JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
-
+  private JobDTO convertToDTO (Job job) {
     Company company = restTemplate.getForObject(
         "http://company:8081/companies/" + job.getCompanyId(), Company.class);
 
-    jobWithCompanyDTO.setJob(job);
-    jobWithCompanyDTO.setCompany(company);
-    return jobWithCompanyDTO;
+    ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
+        "http://review:8083/reviews?companyId=" + job.getCompanyId(),
+        HttpMethod.GET,
+        null,
+        new ParameterizedTypeReference<List<Review>>() {});
+
+    return JobMapper.mapToJobDto(job, company, reviewResponse.getBody());
   }
 
   @Override
-  public Optional<Job> getJobById(Long jobId) {
-    return jobDao.findById(jobId);
+  public JobDTO getJobById(Long jobId) {
+    return convertToDTO(jobDao.findById(jobId).orElse(null));
   }
 
   @Override

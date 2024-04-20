@@ -1,4 +1,4 @@
-package org.example.job.job;
+package org.example.job.job.pojo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package org.example.job.external;
+package org.example.job.job.externalpojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

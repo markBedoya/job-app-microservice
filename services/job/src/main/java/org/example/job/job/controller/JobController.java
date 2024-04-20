@@ -1,9 +1,10 @@
-package org.example.job.job;
+package org.example.job.job.controller;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.example.job.job.dto.JobWithCompanyDTO;
+import org.example.job.job.pojo.Job;
+import org.example.job.job.service.JobService;
+import org.example.job.job.dto.JobDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,15 +24,13 @@ public class JobController {
   private JobService jobService;
 
   @GetMapping
-  public ResponseEntity<List<JobWithCompanyDTO>> getAllJobs() {
+  public ResponseEntity<List<JobDTO>> getAllJobs() {
     return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
   }
 
   @GetMapping("/{jobId}")
-  public ResponseEntity<Job> getJobById(@PathVariable Long jobId) {
-    Optional<Job> job = jobService.getJobById(jobId);
-    return job.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  public ResponseEntity<JobDTO> getJobById(@PathVariable Long jobId) {
+    return new ResponseEntity<>(jobService.getJobById(jobId), HttpStatus.OK);
   }
 
   @PostMapping
