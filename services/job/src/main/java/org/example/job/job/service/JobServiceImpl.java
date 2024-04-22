@@ -11,45 +11,39 @@ import org.example.job.job.dto.JobDTO;
 import org.example.job.job.externalpojo.Review;
 import org.example.job.job.mapper.JobMapper;
 import org.example.job.job.pojo.Job;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @AllArgsConstructor
 public class JobServiceImpl implements JobService {
 
   private JobDao jobDao;
-  //private RestTemplate restTemplate;
   private CompanyClient companyClient;
   private ReviewClient reviewClient;
 
   @Override
   public List<JobDTO> getAllJobs() {
     List<Job> jobs = jobDao.findAll();
-    return jobs.stream().map(this::convertToDTO).toList();
+    return jobs.stream()
+        .map(Optional::ofNullable)
+        .map(this::convertToDTO)
+        .toList();
   }
 
-  private JobDTO convertToDTO (Job job) {
-    //Company company = restTemplate.getForObject(
-    //    "http://company:8081/companies/" + job.getCompanyId(), Company.class);
-    Company company = companyClient.getCompany(job.getCompanyId());
+  private JobDTO convertToDTO (Optional<Job> job) {
+    if (job.isEmpty()) {
+      return new JobDTO();
+    }
 
-    //ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
-    //    "http://review:8083/reviews?companyId=" + job.getCompanyId(),
-    //    HttpMethod.GET,
-    //    null,
-    //    new ParameterizedTypeReference<List<Review>>() {});
-    List<Review> reviewList = reviewClient.getReviews(job.getCompanyId());
+    Company company = companyClient.getCompany(job.get().getCompanyId());
+    List<Review> reviewList = reviewClient.getReviews(job.get().getCompanyId());
 
-    return JobMapper.mapToJobDto(job, company, reviewList);
+    return JobMapper.mapToJobDto(job.get(), company, reviewList);
   }
 
   @Override
   public JobDTO getJobById(Long jobId) {
-    return convertToDTO(jobDao.findById(jobId).orElse(null));
+    return convertToDTO(jobDao.findById(jobId));
   }
 
   @Override
