@@ -11,6 +11,7 @@ Technologies:
   OpenFeign        - Spring Cloud library to reduce REST request code for internal service communications
   Zipkin trace/log - Distributed Tracing and logging solution
   Config Server    - Spring cloud config server managing all env configs in one place.
+  Gateway Server   - Spring cloud gateway server used to route external traffic into our microservices
   Java             - Primary language
   Spring Boot      - Web Framework
   PostgreSQL DB    - Primary relational DB

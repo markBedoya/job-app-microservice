@@ -1,0 +1,49 @@
+###
+//GetCompanyById
+GET localhost:8084/companies/1
+
+###
+//CreateCompany
+POST http://localhost:8084/companies
+Content-Type: application/json
+
+{
+  "name": "CompanyName",
+  "description": "CompanyDescription"
+}
+
+###
+//GetJobById
+GET localhost:8084/jobs/1
+
+###
+//CreateJob
+POST localhost:8084/jobs
+Content-Type: application/json
+
+{
+  "title": "Title",
+  "description": "Description",
+  "minSalary": "30000",
+  "maxSalary": "40000",
+  "location": "Location",
+  "test" : "test",
+  "companyId" : 1
+}
+
+###
+//GetReviewById
+GET localhost:8084/reviews/1
+
+###
+//CreateReview
+POST localhost:8084/reviews?companyId=1
+Content-Type: application/json
+
+{
+  "title": "Review Title",
+  "message": "Review Message",
+  "rating": 5.00
+}
+
+###
