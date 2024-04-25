@@ -10,6 +10,7 @@ Technologies:
   Spring Cloud     - Required for service registry and built-in load balancing for Rest Template
   OpenFeign        - Spring Cloud library to reduce REST request code for internal service communications
   Zipkin trace/log - Distributed Tracing and logging solution
+  Config Server    - Spring cloud config server managing all env configs in one place.
   Java             - Primary language
   Spring Boot      - Web Framework
   PostgreSQL DB    - Primary relational DB
@@ -24,3 +25,9 @@ API Documentation:
   CompanyControllerTest.http
   JobControllerTest.http
   ReviewControllerTest.http
+
+Setup PostgreSQL DB:
+1. Clear local docker containers and images if starting from scratch to get latest images
+2. Run the docker compose file
+3. Config postgre with pgadmin4 by find the postgre IP by running cmd [docker inspect <container-id>]
+4. Create the databases for the individual microservices (job,company,review)
