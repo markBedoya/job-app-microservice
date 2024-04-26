@@ -1,4 +1,8 @@
 ###
+//GetEurekaServer from gateway server
+GET localhost:8084/eureka/main
+
+###
 //GetCompanyById
 GET localhost:8084/companies/1
 
