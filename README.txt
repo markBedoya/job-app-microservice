@@ -12,6 +12,7 @@ Technologies:
   Zipkin trace/log - Distributed Tracing and logging solution
   Config Server    - Spring cloud config server managing all env configs in one place.
   Gateway Server   - Spring cloud gateway server used to route and load balance external traffic into our microservices
+  Resilience4j     - Lightweight, easy-to-use fault tolerance library for spring-boot apps
   Java             - Primary language
   Spring Boot      - Web Framework
   PostgreSQL DB    - Primary relational DB

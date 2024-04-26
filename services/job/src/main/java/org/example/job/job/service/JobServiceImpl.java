@@ -1,8 +1,13 @@
 package org.example.job.job.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.example.job.job.clients.CompanyClient;
 import org.example.job.job.clients.ReviewClient;
 import org.example.job.job.dao.JobDao;
@@ -15,14 +20,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class JobServiceImpl implements JobService {
 
   private JobDao jobDao;
   private CompanyClient companyClient;
   private ReviewClient reviewClient;
+  private static int attempt = 0;
 
   @Override
+  // commenting out circuitBreaker to test @Retry
+  //@CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+  // commenting out to test @RateLimiter
+  //@Retry(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+  //@RateLimiter(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
   public List<JobDTO> getAllJobs() {
+    log.info("Retry attempt: " + ++attempt);
     List<Job> jobs = jobDao.findAll();
     return jobs.stream()
         .map(Optional::ofNullable)
@@ -30,11 +43,19 @@ public class JobServiceImpl implements JobService {
         .toList();
   }
 
+  public List<String> companyBreakerFallback(Exception e) {
+    List<String> list = new ArrayList<>();
+    list.add("Dummy");
+    return list;
+  }
+
   private JobDTO convertToDTO (Optional<Job> job) {
     if (job.isEmpty()) {
       return new JobDTO();
     }
 
+    //These rest calls can be called with Spring Rest Template
+    //OpenFeign simplifies these calls
     Company company = companyClient.getCompany(job.get().getCompanyId());
     List<Review> reviewList = reviewClient.getReviews(job.get().getCompanyId());
 
