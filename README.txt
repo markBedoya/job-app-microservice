@@ -10,7 +10,7 @@ Technologies:
   Spring Cloud     - Required for service registry and built-in load balancing for Rest Template
   OpenFeign        - Spring Cloud library to reduce REST request code for internal service communications
   Zipkin trace/log - Distributed Tracing and logging solution
-  Config Server    - Spring cloud config server managing env configs in one place
+  Config Server    - Spring cloud config server example to manage env configs separately outside of the packaged microservice job jar/container
   Gateway Server   - Spring cloud gateway server used to route and load balance external traffic into our microservices
   Resilience4j     - Impl Circuit breaker, REST call retries, API rate limiter options - Lightweight, easy-to-use fault tolerance library for spring-boot apps
   RabbitMQ         - Async demo messaging between review and company microservices
