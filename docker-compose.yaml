@@ -1,6 +1,5 @@
 # To start all containers on local terminal, run cmd [docker compose up -d]
 # To stop all containers on local terminal, run cmd [docker compose down]
-# To remove all stopped docker containers [docker container prune]
 # To check pgAdmin connection with postgresSQL, run cmd [docker exec -ti pgadmin_container ping postgres_container]
 
 services:
@@ -38,6 +37,16 @@ services:
     container_name: zipkin
     ports:
       - 9411:9411
+    networks:
+      - postgres
+  rabbitmq:
+    # localhost:15672
+    # username: guest / password guest
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
     networks:
       - postgres
 

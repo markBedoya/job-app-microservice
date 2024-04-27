@@ -1,5 +1,5 @@
 Job-App-Microservice-Demo
-  Java Spring Boot Microservice Rest APIs with PostgreSQL DB
+  Java Spring Boot Microservices Rest/MQ APIs with PostgreSQL DB
 
 Summary:
   This takes the job-app and separates the functionality of company/job/reviews
@@ -13,6 +13,7 @@ Technologies:
   Config Server    - Spring cloud config server managing env configs in one place
   Gateway Server   - Spring cloud gateway server used to route and load balance external traffic into our microservices
   Resilience4j     - Impl Circuit breaker, REST call retries, API rate limiter options - Lightweight, easy-to-use fault tolerance library for spring-boot apps
+  RabbitMQ         - Async demo messaging between review and company microservices
   Java             - Primary language
   Spring Boot      - Web Framework
   PostgreSQL DB    - Primary relational DB
@@ -21,7 +22,7 @@ Technologies:
   Maven            - Automation and dependency management
   Lombok           - Java library using known patterns to reduce code
   Spring Actuator  - Module that provides features to monitor and manage the application
-  Docker           - docker-compose file contains postgres DB app containers required for this app
+  Docker           - docker-compose file contains all app containers required for this app
 
 API Documentation:
   CompanyControllerTest.http

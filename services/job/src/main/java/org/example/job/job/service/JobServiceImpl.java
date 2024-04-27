@@ -29,10 +29,8 @@ public class JobServiceImpl implements JobService {
   private static int attempt = 0;
 
   @Override
-  // commenting out circuitBreaker to test @Retry
   //@CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
-  // commenting out to test @RateLimiter
-  //@Retry(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+  @Retry(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
   //@RateLimiter(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
   public List<JobDTO> getAllJobs() {
     log.info("Retry attempt: " + ++attempt);

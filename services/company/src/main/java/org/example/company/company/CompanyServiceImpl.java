@@ -1,15 +1,21 @@
 package org.example.company.company;
 
+import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.example.company.company.clients.ReviewClient;
+import org.example.company.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class CompanyServiceImpl implements CompanyService {
 
   private CompanyDao companyDao;
+  private ReviewClient reviewClient;
 
   @Override
   public List<Company> getAllCompanies() {
@@ -46,6 +52,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
     companyDao.deleteById(companyId);
     return true;
+  }
+
+  @Override
+  public void updateCompanyRating(ReviewMessage reviewMessage) {
+    Company company = companyDao.findById(reviewMessage.getCompanyId()).orElseThrow(() ->
+        new NotFoundException("company not found with companyId=" +reviewMessage.getCompanyId()));
+    company.setAverageRating(reviewClient
+            .getAvgCompanyRating(reviewMessage.getCompanyId()));
+    companyDao.save(company);
   }
 
 }
