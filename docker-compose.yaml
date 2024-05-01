@@ -3,6 +3,7 @@
 # To check pgAdmin connection with postgresSQL, run cmd [docker exec -ti pgadmin_container ping postgres_container]
 
 services:
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -17,6 +18,7 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
@@ -32,25 +34,114 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     ports:
-      - 9411:9411
+      - "9411:9411"
     networks:
       - postgres
+
   rabbitmq:
     # localhost:15672
     # username: guest / password guest
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - postgres
 
+  service-registry:
+    image: markbedoya/service-registry:latest
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    depends_on:
+      - rabbitmq
+      - zipkin
+      - postgres
+      - pgadmin
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  config-server:
+    image: markbedoya/config-server:latest
+    container_name: config-server
+    ports:
+      - "8085:8085"
+    depends_on:
+      - service-registry
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  company-service:
+    image: markbedoya/company-service:latest
+    container_name: company-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  review-service:
+    image: markbedoya/review-service:latest
+    container_name: review-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  job-service:
+    image: markbedoya/job-service:latest
+    container_name: job-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      #- EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+
+  gateway-server:
+    image: markbedoya/gateway-server:latest
+    container_name: gateway-server
+    ports:
+      - "8084:8084"
+    depends_on:
+      - service-registry
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
 networks:
+  microservice-network:
+    driver: bridge
   postgres:
     driver: bridge
 
