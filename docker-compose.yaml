@@ -1,9 +1,13 @@
 # To start all containers on local terminal in detached mode, run cmd [docker compose up -d]
 # To stop all containers on local terminal, run cmd [docker compose down]
 # To check pgAdmin connection with postgresSQL, run cmd [docker exec -ti pgadmin_container ping postgres_container]
+# To clean docker system, visit [https://docs.docker.com/config/pruning/] for the list of cmds
 
 services:
 
+  ######################################
+  ###      SUPPORTING SERVICES      ####
+  ######################################
   postgres:
     container_name: postgres_container
     image: postgres
@@ -54,6 +58,13 @@ services:
     networks:
       - postgres
 
+  #############################################
+  ###      END OF SUPPORTING SERVICES      ####
+  #############################################
+
+  ##########################################
+  ###      MICROSERVICE CONTAINERS      ####
+  ##########################################
   service-registry:
     image: markbedoya/service-registry:latest
     container_name: service-registry
@@ -138,6 +149,10 @@ services:
       - postgres
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
+  #################################################
+  ###      END OF MICROSERVICE CONTAINERS      ####
+  #################################################
 
 networks:
   microservice-network:
