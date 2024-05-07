@@ -6,8 +6,8 @@ Summary:
   This takes the job-app application and separates the functionality of
   company/job/reviews into individual microservices.
 
-MicroServices:
-  Functional Services:
+This app Services:
+  Microservices:
     1. job-service
     2. review-service
     3. company-service
@@ -16,7 +16,28 @@ MicroServices:
     2. gateway-server
     3. config-server
 
+API Documentation:
+  CompanyControllerTest.http
+  JobControllerTest.http
+  ReviewControllerTest.http
+  GatewayControllerTest.http
+
+Running this app:
+  1. Run individual microservices from local IDE intellij
+      and run [docker compose up -d] for all required supporting services
+      Note: Setup postgre DB is required for first time and steps are listed below.
+  2. Run all services from docker containers [docker compose up -d] for all
+      Note: Setup postgre DB is required for first time and steps are listed below.
+  3. Run from Kubernetes files using minikube following the steps for "start k8s cluster" below.
+      Note: service-registry, gateway-server, config-server are not required when running from
+            k8 files as service discovery, gateway / load balancing, env configs
+            are handled innately.
+
 Technologies:
+  Kubernetes (K8s) - Service discovery, load balancing, horizontal scaling,
+                      automated rollouts and rollbacks, self-healing, secret and config management,
+  Minikube         - minikube is local kubernetes, focusing on making it easy to learn and develop
+                      for Kubernetes. Not for production.
   Service Registry - Spring cloud netflix eureka for service registry
   Spring Cloud     - Required for service registry and built-in load balancing for Rest Template
   OpenFeign        - Spring Cloud library to reduce code for writing REST requests for
@@ -39,30 +60,73 @@ Technologies:
   Spring Actuator  - Module that provides features to monitor and manage the application
   Docker           - docker-compose file contains all app containers required for this app
 
-API Documentation:
-  CompanyControllerTest.http
-  JobControllerTest.http
-  ReviewControllerTest.http
-  GatewayControllerTest.http
+Docker Support:
+  Setup PostgreSQL DB docker container:
+    1. Clear local docker containers and images if starting from scratch to get latest images
+    2. Run the docker compose file
+    3. Config postgre with pgadmin4 by find the postgre IP by running cmd [docker inspect <container-id>]
+    4. Create the databases for the individual microservices (job,company,review)
+    5. Use pgAdmin for the database GUI
+  Example of how to create Docker Images of these microservices and push to Docker Registry:
+    0. Generate Maven Wrapper files - In root project folder, run cmd
+      [mvn wrapper:wrapper] if not present already to run the cmd below.
+    1. Startup Docker engine in order to run the cmd below in the root directory of the project.
+    2. Create docker image from project root with
+      [./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=markbedoya/service-registry"]
+      [./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=markbedoya/job-service"]
+      Note: if build fails, make sure postgre DB is running as that is a common error I ran into.
+    3. Push image to docker hub with [docker push markbedoya/service-registry:latest]
+  Run individual docker images in containers:
+    1. Login with [docker login]
+    2. Check current docker images and their tags with [docker images]
+    3. Run image with [docker run -d -p 8761:8761 markbedoya/service-registry]
+    4. See docker containers running with [docker ps]
+    5. See application logs with [docker logs <container-id>]
+    6. Stop docker container with [docker stop <container-id>]
+    7. See docker all containers with [docker ps -a]
+    8. remove docker container with [docker rm <container-id>]
 
-Setup PostgreSQL DB:
-  1. Clear local docker containers and images if starting from scratch to get latest images
-  2. Run the docker compose file
-  3. Config postgre with pgadmin4 by find the postgre IP by running cmd [docker inspect <container-id>]
-  4. Create the databases for the individual microservices (job,company,review)
+Kubernetes(K8s) Support:
+  Setup PostgreSQL DB from minikube k8 files:
+    1. Ensure minikube is running
+    2. Start postgres k8 files [kubectl apply -f k8s\support-services\postgres\]
+    3. login to postgres k8 pod terminal [kubectl exec -it postgres-0 -- psql -U sa]
+    4. list postgres DBs [\l]
+    5. create databases from postgres pod terminal [create database job;] (review/company also needed)
+    6. to exit terminal [ctrl+d]
+  For local development and testing k8s, download minikube
+    Note: Eureka and API gateway services are not required when running from k8 files
+    Download link [https://minikube.sigs.k8s.io/docs/start/]
+    Start minikube by running docker engine, then [minikube start --driver=docker]
+    Check kubectl [kubectl cluster-info]
+    View minikube GUI [minikube dashboard] and it will open in browser
+    Start one file or all k8 files in directory [kubectl apply -f k8s\support-services\postgres\]
+    cmd to get all pods [kubectl get pods] and add -w for watch mode
+    cmd to get services [kubectl get service]
+    cmd to get replicaSet [kubectl get replicaset]
+    delete pod [kubectl delete my-replicaset]
+    cmd to get deployments [kubectl get deployments]
+    view event details of a pod [kubectl describe deployment <my-deployment>]
+    view logs of a pod [kubectl logs <my-deployment>]
+    get all running k8 running items [kubectl get all]
+    delete all deployments [kubectl delete deployments --all --all-namespaces]
+    delete all services [kubectl delete services --all --all-namespaces]
+    delete all pods [kubectl delete pods --all --all-namespaces]
+    delete all replicasets [kubectl delete replicasets --all --all-namespaces]
+    delete all statefulsets [kubectl delete statefulsets --all --all-namespaces]
+  Start Kubernetes Cluster:
+    Ensure minikube is running [minikube start --driver=docker]
+    [kubectl apply -f .\k8s\support-services\zipkin\]
+    [kubectl apply -f .\k8s\support-services\rabbitmq\]
+    [kubectl apply -f .\k8s\support-services\postgres\]
+    [kubectl apply -f .\k8s\microservices\job-service\]
+    [kubectl apply -f .\k8s\microservices\company-service\]
+    [kubectl apply -f .\k8s\microservices\review-service\]
+    to stop all run [minikube stop]
+  Run in isolated terminals to get the respective urls for testing
+    [minikube service job-service --url]
+    [minikube service company-service --url]
+    [minikube service review-service --url]
+    [minikube service zipkin --url]
 
-How to create Docker Images of these services and push to Docker Registry:
-  0. Generate Maven Wrapper files - In root project folder, run cmd
-    [mvn wrapper:wrapper] if not present already to run the cmd below.
-  1. Startup Docker engine in order to run the cmd below in the root directory of the project.
-  2. Create docker image from project root with
-    [./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=markbedoya/service-registry"]
-  3. Login with [docker login]
-  4. Check current docker images and their tags with [docker images]
-  5. Run image with [docker run -d -p 8761:8761 markbedoya/service-registry]
-  6. See docker containers running with [docker ps]
-  7. See application logs with [docker logs <container-id>]
-  8. Stop docker container with [docker stop <container-id>]
-  9. See docker all containers with [docker ps -a]
-  10. remove docker container with [docker rm <container-id>]
-  11. Push image to docker hub with [docker push markbedoya/service-registry:latest]
+
