@@ -28,7 +28,7 @@ Running this app:
       Note: Setup postgre DB is required for first time and steps are listed below.
   2. Run all services from docker containers [docker compose up -d] for all
       Note: Setup postgre DB is required for first time and steps are listed below.
-  3. Run from Kubernetes files using minikube following the steps for "start k8s cluster" below.
+  3. Run from Kubernetes cluster using minikube following the steps for "start k8s cluster" below.
       Note: TODO - job/company/review have unknownHostException: postgres when connecting
                    to postgres from k8 cluster.
       Note: service-registry, gateway-server, config-server are not required when running from
