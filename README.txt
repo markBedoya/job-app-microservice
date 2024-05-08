@@ -6,7 +6,7 @@ Summary:
   This takes the job-app application and separates the functionality of
   company/job/reviews into individual microservices.
 
-This app Services:
+This App Services:
   Microservices:
     1. job-service
     2. review-service
