@@ -23,12 +23,12 @@ API Documentation:
   GatewayControllerTest.http
 
 Running this app:
-  1. Run individual microservices from local IDE intellij
-      and run [docker compose up -d] for all required supporting services
+  1. IDE Intellij - run individual microservices and run [docker compose up -d] for all required
+      supporting services that are not included in the apps microservices.
       Note: Setup postgre DB is required for first time and steps are listed below.
-  2. Run all services from docker containers [docker compose up -d] for all
+  2. Docker Containers - run cmd [docker compose up -d] for all within docker compose file.
       Note: Setup postgre DB is required for first time and steps are listed below.
-  3. Run from Kubernetes cluster using minikube following the steps for "start k8s cluster" below.
+  3. Kubernetes Cluster - using minikube following the steps for "start k8s cluster" below.
       Note: TODO - job/company/review have unknownHostException: postgres when connecting
                    to postgres from k8 cluster.
       Note: service-registry, gateway-server, config-server are not required when running from
